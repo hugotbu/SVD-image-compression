@@ -131,3 +131,32 @@ def manual_svd(A, max_iterations= 1000):
             S[i] = 0.0
 
     return U, S, V.T
+
+
+def compress_matrix(A, k):
+    m, n = A.shape
+
+    U, S, V_T = manual_svd(A)
+
+    k = min(k, len(S))
+
+
+    U_k = U[:, :k]  
+    S_k = S[:k]  
+    V_T_k = V_T[:k, :] 
+
+    U_k_scaled = np.zeros((m, k), dtype=np.float64)
+    for i in range(m):
+        for j in range(k):
+            U_k_scaled[i, j] = U_k[i, j] * S_k[j]
+
+    A_k = matrix_multiply(U_k_scaled, V_T_k)
+
+    for p in range(m):
+        for q in range(n):
+            if A_k[p, q] < 0.0:
+                A_k[p, q] = 0.0
+            elif A_k[p, q] > 255.0:
+                A_k[p, q] = 255.0
+
+    return A_k, S
