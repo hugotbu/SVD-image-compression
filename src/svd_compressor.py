@@ -72,15 +72,15 @@ def manual_norm(v):
     return np.sqrt(total)
 
 
-def compute_eigenvectors_power_iteration(A_T_multiply_A, eigenvalues, max_iterations = 100):
+def eigenvectors_power_iteration(A_T_multiply_A, eigenvalues, max_iterations = 100):
     n = A_T_multiply_A.shape[0]
     V = np.zeros((n, n), dtype=np.float64)
     A_T_muliply_A_current = A_T_multiply_A.copy().astype(np.float64)
 
     for i in range(n):
-        lambda = eigenvalues[i]
+        lam = eigenvalues[i]
 
-        if lambda < 1e-10:
+        if lam < 1e-10:
             v = np.zeros(n, dtype=np.float64)
             v[i] = 1
             V[:, i] = v
@@ -102,7 +102,32 @@ def compute_eigenvectors_power_iteration(A_T_multiply_A, eigenvalues, max_iterat
 
         for r in range(n):
             for c in range(n):
-                A_T_muliply_A_current[r, c] -= lambda * v[r] * v[c]
+                A_T_muliply_A_current[r, c] -= lam * v[r] * v[c]
 
     return V
 
+def manual_svd(A, max_iterations= 1000):
+    m, n = A.shape
+
+    A_T = A.T
+    A_T_multiply_A = matrix_multiply(A_T, A)
+
+    eigenval = eigenvalues(A_T_multiply_A)
+
+    S = np.sqrt(eigenval)
+
+    V = eigenvectors_power_iteration(A_T_multiply_A, eigenval)
+
+    U = np.zeros((m, n), dtype=np.float64)
+
+    tol = 1e-10
+
+    for i in range(min(m, n)):
+        if S[i] > tol:
+            v_i = V[:, i]
+            u_i = matrix_vector_multiply(A, v_i)
+            U[:, i] = u_i / S[i]
+        else:
+            S[i] = 0.0
+
+    return U, S, V.T
