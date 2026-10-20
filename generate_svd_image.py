@@ -10,7 +10,7 @@ def create_and_save_summary():
 
    
     #A = load_image_as_matrix("data/test_image.jpg")
-    A = load_image_as_matrix("data/test_image.jpg") [:20, :20]
+    A = load_image_as_matrix("data/test_image.jpg") [:50, :50]
     m, n = A.shape
     max_k = min(m, n)
 
@@ -24,14 +24,14 @@ def create_and_save_summary():
         k = min(k, len(S))
         U_k = U[:, :k]
         S_k = S[:k]
-        Vt_k = V_T[:k, :]
+        V_T_k = V_T[:k, :]
 
         U_k_scaled = np.zeros((m, k), dtype=np.float64)
         for i in range(m):
             for j in range(k):
                 U_k_scaled[i, j] = U_k[i, j] * S_k[j]
 
-        A_k = matrix_multiply(U_k_scaled, Vt_k)
+        A_k = matrix_multiply(U_k_scaled, V_T_k)
 
         for p in range(m):
             for q in range(n):
