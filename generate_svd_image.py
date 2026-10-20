@@ -8,16 +8,14 @@ from src.utils import compression_ratio, load_image_as_matrix, manual_matrix_nor
 def create_and_save_summary():
     print("Laster inn bilde og kjører manuell SVD...")
 
-   
-    #A = load_image_as_matrix("data/test_image.jpg")
-    A = load_image_as_matrix("data/test_image.jpg") [:50, :50]
+    A = load_image_as_matrix("data/test_image2.jpg")
     m, n = A.shape
     max_k = min(m, n)
 
     U, S, V_T = manual_svd(A)
 
-    k_low = max(1, int(max_k * 0.05))
-    k_med = max(1, int(max_k * 0.20))
+    k_low = max(1, int(max_k * 0.03))
+    k_med = max(1, int(max_k * 0.15))
     k_high = max(1, int(max_k * 0.50))
 
     def A_k(k):
@@ -103,7 +101,7 @@ def create_and_save_summary():
 
     output_path = "data/svd_summary_result.png"
     plt.savefig(output_path, dpi=200, bbox_inches="tight")
-    print(f"✅ Suksess! Oppsummeringsbilde ble lagret i: {output_path}")
+    print(f"Suksess! Oppsummeringsbilde ble lagret i: {output_path}")
 
 
 if __name__ == "__main__":
