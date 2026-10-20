@@ -117,7 +117,7 @@ def manual_svd(A, max_iterations= 1000):
     S = np.sqrt(eigenval)
 
     V = eigenvectors_power_iteration(A_T_multiply_A, eigenval)
-
+    V_T = V.T
     U = np.zeros((m, n), dtype=np.float64)
 
     tol = 1e-10
@@ -130,7 +130,13 @@ def manual_svd(A, max_iterations= 1000):
         else:
             S[i] = 0.0
 
-    return U, S, V.T
+    sort_indices = np.argsort(S)[::-1]
+
+    S = S[sort_indices]
+    U = U[:, sort_indices]
+    V_T = V_T[sort_indices, :]
+
+    return U, S, V_T
 
 
 def compress_matrix(A, k):
