@@ -113,6 +113,8 @@ def manual_svd(A, max_iterations= 1000):
     A_T_multiply_A = matrix_multiply(A_T, A)
 
     eigenval = eigenvalues(A_T_multiply_A)
+    sort_indices = np.argsort(eigenval)[::-1]
+    eigenval = eigenval[sort_indices]
 
     S = np.sqrt(eigenval)
 
