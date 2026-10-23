@@ -8,13 +8,13 @@ from src.utils import compression_ratio, load_image_as_matrix, manual_matrix_nor
 def create_and_save_summary():
     print("Laster inn bilde og kjører manuell SVD...")
 
-    A = load_image_as_matrix("data/test_image2.jpg")
+    A = load_image_as_matrix("data/test_image2.jpg")[:100, :100]
     m, n = A.shape
     max_k = min(m, n)
 
     U, S, V_T = manual_svd(A)
 
-    k_low = max(1, int(max_k * 0.03))
+    k_low = max(1, int(max_k * 0.035))
     k_med = max(1, int(max_k * 0.15))
     k_high = max(1, int(max_k * 0.50))
 
