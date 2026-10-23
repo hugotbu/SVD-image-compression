@@ -8,13 +8,13 @@ from src.utils import compression_ratio, load_image_as_matrix, manual_matrix_nor
 def create_and_save_summary():
     print("Laster inn bilde og kjører manuell SVD...")
 
-    A = load_image_as_matrix("data/test_image2.jpg")[:100, :100]
+    A = load_image_as_matrix("data/test_image3.jpg")
     m, n = A.shape
     max_k = min(m, n)
 
     U, S, V_T = manual_svd(A)
 
-    k_low = max(1, int(max_k * 0.035))
+    k_low = max(1, int(max_k * 0.05))
     k_med = max(1, int(max_k * 0.15))
     k_high = max(1, int(max_k * 0.50))
 
@@ -85,9 +85,8 @@ def create_and_save_summary():
     ax5.set_ylabel("Singulærverdi (σ_i)")
     ax5.grid(True, which="both", linestyle="--", alpha=0.5)
 
-    # Rad 2: Graf 2 (Feil vs Rang k for et utvalg av k-verdier)
     step = max(1, max_k // 20)
-    k_samples = list(range(1, max_k + 1, step))
+    k_samples = list(range(1, max_k//2, step))
     errors = [manual_matrix_norm(A - A_k(k_v)) / norm_A for k_v in k_samples]
 
     ax6 = plt.subplot(2, 2, 4)
